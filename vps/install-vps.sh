@@ -15,13 +15,32 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
+prompt_value() {
+  prompt="$1"
+  target="$2"
+  reply=""
+
+  if [ -r /dev/tty ]; then
+    printf '%s' "$prompt" > /dev/tty
+    if ! IFS= read -r reply </dev/tty; then
+      return 1
+    fi
+  else
+    printf '%s' "$prompt" >&2
+    if ! IFS= read -r reply; then
+      return 1
+    fi
+  fi
+
+  eval "$target=\$reply"
+}
+
 if [ -z "$DOMAIN" ]; then
-  printf 'Domain: '
-  read -r DOMAIN
+  prompt_value 'Domain: ' DOMAIN || true
 fi
 
 if [ -z "$DOMAIN" ]; then
-  echo "Domain is required."
+  echo "Domain is required. Pass it as the first argument."
   exit 1
 fi
 
@@ -39,8 +58,7 @@ if [ -z "$ADMIN_SESSION_SECRET" ]; then
 fi
 
 if [ -z "$EMAIL" ]; then
-  printf 'Email for certbot (optional): '
-  read -r EMAIL || true
+  prompt_value 'Email for certbot (optional): ' EMAIL || true
 fi
 
 apt-get update

@@ -36,13 +36,13 @@ Open `/admin/login`, sign in, then edit site settings and donation data in `/adm
 Install:
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/install-vps.sh?v=$(date +%s)" | sudo sh
+curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/install-vps.sh?v=$(date +%s)" | sudo sh -s -- your-domain.ru
 ```
 
 Remove:
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/uninstall-vps.sh?v=$(date +%s)" | sudo sh
+curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/uninstall-vps.sh?v=$(date +%s)" | sudo sh -s -- your-domain.ru
 ```
 
 ## YooKassa

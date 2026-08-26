@@ -19,9 +19,15 @@ if [ -n "$DOMAIN" ]; then
   DOMAIN="${DOMAIN#https://}"
 fi
 
-printf 'This will remove %s. Continue? [y/N]: ' "$APP_DIR"
-read -r answer
-case "$answer" in
+confirm=""
+if [ -r /dev/tty ]; then
+  printf 'This will remove %s. Continue? [y/N]: ' "$APP_DIR" > /dev/tty
+  IFS= read -r confirm </dev/tty || true
+else
+  printf 'This will remove %s. Continue? [y/N]: ' "$APP_DIR" >&2
+  IFS= read -r confirm || true
+fi
+case "$confirm" in
   y|Y|yes|YES) ;;
   *) echo "Aborted."; exit 0 ;;
 esac
