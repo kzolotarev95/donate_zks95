@@ -1,0 +1,15 @@
+[Unit]
+Description=donate_zks95 Next.js app
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/donate_zks95
+EnvironmentFile=/var/www/donate_zks95/.env.local
+ExecStart=/usr/bin/npm run start -- --port 3000
+Restart=always
+RestartSec=5
+User=www-data
+
+[Install]
+WantedBy=multi-user.target

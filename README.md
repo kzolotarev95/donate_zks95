@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# donate_zks95
 
-## Getting Started
+Open source developer site with projects, donations, admin panel, YooKassa payments, and VPS deployment notes.
 
-First, run the development server:
+## Local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Env
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` and fill:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `SITE_URL`
+- `ADMIN_PASSWORD`
+- `ADMIN_SESSION_SECRET`
+- `YOOKASSA_SHOP_ID`
+- `YOOKASSA_SECRET_KEY`
+- `YOOKASSA_WEBHOOK_SECRET`
 
-## Learn More
+## Admin
 
-To learn more about Next.js, take a look at the following resources:
+Open `/admin/login`, sign in, then edit site settings and donation data in `/admin`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## VPS + HTTPS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Run the app with `npm run build` and `npm run start` behind `systemd`.
+2. Put nginx in front of Node on `127.0.0.1:3000`.
+3. Issue SSL with `certbot --nginx`.
+4. Set `SITE_URL` to the final `https://` domain.
 
-## Deploy on Vercel
+## YooKassa
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Payment creation: `/api/payments/create`
+- Webhook: `/api/payments/webhook?secret=...`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set the same webhook secret in YooKassa and in `.env.local`.
