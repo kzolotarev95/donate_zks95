@@ -243,11 +243,11 @@ EOF
 
 cat > "/etc/nginx/sites-available/${SERVICE_NAME}.conf" <<EOF
 server {
-  listen 80;
-  server_name $SERVER_NAME;
+  listen 80 default_server;
+  server_name _ $SERVER_NAME;
 
-  location ^~ /_next/static/ {
-    alias $APP_DIR/.next/static/;
+  location ^~ /_next/ {
+    alias $APP_DIR/.next/;
     access_log off;
     expires 1y;
     add_header Cache-Control "public, max-age=31536000, immutable";
