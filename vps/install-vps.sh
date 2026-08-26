@@ -159,9 +159,8 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt-get install -y nodejs
 
 mkdir -p "$(dirname "$APP_DIR")"
-git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
 if [ -d "$APP_DIR/.git" ]; then
-  git -C "$APP_DIR" pull --ff-only
+  git -c safe.directory="$APP_DIR" -C "$APP_DIR" pull --ff-only
 else
   git clone --depth 1 --branch main "$REPO_URL" "$APP_DIR"
 fi
