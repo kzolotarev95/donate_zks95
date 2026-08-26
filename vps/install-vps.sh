@@ -246,11 +246,14 @@ server {
   listen 80 default_server;
   server_name _ $SERVER_NAME;
 
-  location ^~ /_next/static/ {
-    alias $APP_DIR/.next/static/;
-    access_log off;
-    expires 1y;
-    add_header Cache-Control "public, max-age=31536000, immutable";
+  location ^~ /_next/ {
+    proxy_pass http://127.0.0.1:$PORT;
+    proxy_http_version 1.1;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection "upgrade";
   }
 
   location / {
