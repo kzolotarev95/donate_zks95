@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import type { NextRequest } from "next/server";
 import { defaultSettings } from "./site-state";
+import { getAdminPassword } from "./admin-password";
 
 const COOKIE_NAME = "dz_admin_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
@@ -9,12 +10,8 @@ function getSecret() {
   return process.env.ADMIN_SESSION_SECRET || "dev-admin-session-secret";
 }
 
-function getPassword() {
-  return process.env.ADMIN_PASSWORD || "admin123";
-}
-
-export function isAdminPassword(input: string) {
-  return input === getPassword();
+export async function isAdminPassword(input: string) {
+  return input === (await getAdminPassword());
 }
 
 export function createSessionToken(now = Date.now()) {

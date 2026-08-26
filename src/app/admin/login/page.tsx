@@ -14,10 +14,10 @@ export default async function AdminLoginPage() {
 
   return (
     <main className="min-h-screen px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-lg rounded-[32px] border border-white/10 bg-white/5 p-6 shadow-[0_40px_120px_rgba(0,0,0,.35)] backdrop-blur">
-        <p className="text-sm uppercase tracking-[0.3em] text-emerald-200">Admin</p>
-        <h1 className="mt-4 text-3xl font-semibold text-white">Вход в панель</h1>
-        <p className="mt-3 text-white/65">Пароль задается через `ADMIN_PASSWORD` или в первом запуске.</p>
+      <div className="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+        <p className="text-xs uppercase tracking-[0.35em] text-white/45">Admin</p>
+        <h1 className="mt-4 text-3xl font-semibold text-white">Вход</h1>
+        <p className="mt-3 text-sm text-white/55">Пароль можно сменить уже внутри панели.</p>
         <div className="mt-6">
           <AdminLoginForm />
         </div>
