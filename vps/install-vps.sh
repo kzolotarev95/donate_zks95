@@ -219,6 +219,7 @@ if [ -n "${YOOKASSA_SHOP_ID:-}" ]; then set_kv "YOOKASSA_SHOP_ID" "$YOOKASSA_SHO
 if [ -n "${YOOKASSA_SECRET_KEY:-}" ]; then set_kv "YOOKASSA_SECRET_KEY" "$YOOKASSA_SECRET_KEY" .env.local; fi
 if [ -n "${YOOKASSA_WEBHOOK_SECRET:-}" ]; then set_kv "YOOKASSA_WEBHOOK_SECRET" "$YOOKASSA_WEBHOOK_SECRET" .env.local; fi
 
+rm -rf .next
 npm ci
 npm run build
 chown -R www-data:www-data "$APP_DIR"
