@@ -119,7 +119,7 @@ export async function loadState(): Promise<AppState> {
       donations: [],
       updatedAt: new Date().toISOString(),
     };
-    await saveState(state);
+    await saveState(state).catch(() => undefined);
     return state;
   }
 }

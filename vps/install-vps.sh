@@ -207,6 +207,7 @@ if [ -n "${YOOKASSA_WEBHOOK_SECRET:-}" ]; then set_kv "YOOKASSA_WEBHOOK_SECRET" 
 
 npm ci
 npm run build
+chown -R www-data:www-data "$APP_DIR"
 
 cat > "/etc/systemd/system/${SERVICE_NAME}.service" <<EOF
 [Unit]
