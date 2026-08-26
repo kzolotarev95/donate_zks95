@@ -31,6 +31,20 @@ Open `/admin/login`, sign in, then edit site settings and donation data in `/adm
 3. Issue SSL with `certbot --nginx`.
 4. Set `SITE_URL` to the final `https://` domain.
 
+## One-liners
+
+Install:
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/install-vps.sh?v=$(date +%s)" | sudo sh
+```
+
+Remove:
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/kzolotarev95/donate_zks95/main/vps/uninstall-vps.sh?v=$(date +%s)" | sudo sh
+```
+
 ## YooKassa
 
 - Payment creation: `/api/payments/create`
