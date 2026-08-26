@@ -149,14 +149,6 @@ rand_string() {
   printf '\n'
 }
 
-if [ -z "$ADMIN_PASSWORD" ]; then
-  ADMIN_PASSWORD="$(rand_string)"
-fi
-
-if [ -z "$ADMIN_SESSION_SECRET" ]; then
-  ADMIN_SESSION_SECRET="$(rand_string)$(rand_string)"
-fi
-
 if [ "$TARGET_TYPE" = "domain" ] && [ -z "$EMAIL" ]; then
   prompt_value 'Email for certbot (optional): ' EMAIL || true
 fi
@@ -167,6 +159,7 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt-get install -y nodejs
 
 mkdir -p "$(dirname "$APP_DIR")"
+git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
 if [ -d "$APP_DIR/.git" ]; then
   git -C "$APP_DIR" pull --ff-only
 else
@@ -177,6 +170,28 @@ cd "$APP_DIR"
 
 if [ ! -f .env.local ]; then
   : > .env.local
+fi
+
+get_kv() {
+  key="$1"
+  file="$2"
+  sed -n "s/^${key}=//p" "$file" | head -n 1
+}
+
+if [ -z "$ADMIN_PASSWORD" ]; then
+  ADMIN_PASSWORD="$(get_kv ADMIN_PASSWORD .env.local)"
+fi
+
+if [ -z "$ADMIN_PASSWORD" ]; then
+  ADMIN_PASSWORD="$(rand_string)"
+fi
+
+if [ -z "$ADMIN_SESSION_SECRET" ]; then
+  ADMIN_SESSION_SECRET="$(get_kv ADMIN_SESSION_SECRET .env.local)"
+fi
+
+if [ -z "$ADMIN_SESSION_SECRET" ]; then
+  ADMIN_SESSION_SECRET="$(rand_string)$(rand_string)"
 fi
 
 set_kv() {
