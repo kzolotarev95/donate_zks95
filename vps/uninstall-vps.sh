@@ -4,14 +4,26 @@ set -eu
 APP_DIR="${APP_DIR:-/var/www/donate_zks95}"
 SERVICE_NAME="${SERVICE_NAME:-donate-zks95}"
 DOMAIN="${1:-${DOMAIN:-}}"
+SITE_URL=""
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Run as root: sudo sh uninstall-vps.sh example.com"
   exit 1
 fi
 
-if [ -z "$DOMAIN" ] && [ -f "$APP_DIR/.env.local" ]; then
-  DOMAIN="$(sed -n 's|^SITE_URL=https://||p' "$APP_DIR/.env.local" | head -n 1)"
+if [ -f "$APP_DIR/.env.local" ]; then
+  SITE_URL="$(sed -n 's|^SITE_URL=||p' "$APP_DIR/.env.local" | head -n 1)"
+fi
+
+if [ -z "$DOMAIN" ] && [ -n "$SITE_URL" ]; then
+  case "$SITE_URL" in
+    https://*)
+      DOMAIN="${SITE_URL#https://}"
+      ;;
+    http://*)
+      DOMAIN="${SITE_URL#http://}"
+      ;;
+  esac
 fi
 
 if [ -n "$DOMAIN" ]; then
@@ -38,7 +50,7 @@ rm -f "/etc/systemd/system/${SERVICE_NAME}.service"
 rm -f "/etc/nginx/sites-enabled/${SERVICE_NAME}.conf"
 rm -f "/etc/nginx/sites-available/${SERVICE_NAME}.conf"
 
-if [ -n "$DOMAIN" ]; then
+if [ -n "$SITE_URL" ] && [ "${SITE_URL#https://}" != "$SITE_URL" ]; then
   certbot delete --cert-name "$DOMAIN" --non-interactive --quiet 2>/dev/null || true
 fi
 
